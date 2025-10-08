@@ -1,26 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:journally/screens/navigation_bar.dart';
 
-class Journalise extends StatelessWidget {
-  const Journalise({super.key});
+class JournalAdd extends StatelessWidget {
+  const JournalAdd({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 247, 239, 162),
+      backgroundColor: Color.fromRGBO(212, 174, 160, 1),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 247, 239, 162),
+        backgroundColor: Color.fromRGBO(212, 174, 160, 1),
+        title: const Text("Journals"),
         actions: [
           IconButton(
             icon: const Icon(Icons.check, size: 28),
             onPressed: () {
-              ScaffoldMessenger.of(
+              // Go back to Bottomnavbar with Journals tab
+              Navigator.pushAndRemoveUntil(
                 context,
-              ).showSnackBar(const SnackBar(content: Text("Save clicked!")));
+                MaterialPageRoute(builder: (context) =>  Bottomnavbar(initialIndex: 1)),
+                (route) => false, // remove all previous routes
+              );
             },
           ),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
         ],
-        title:  Text("Notes"),
       ),
       body: Center(
         child: Padding(
@@ -31,11 +35,11 @@ class Journalise extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Colors.black26,
                   blurRadius: 8,
-                  offset: const Offset(4, 4),
+                  offset: Offset(4, 4),
                 ),
               ],
             ),
@@ -44,25 +48,20 @@ class Journalise extends StatelessWidget {
                 ListView.builder(
                   itemCount: 40,
                   itemBuilder: (context, index) {
-                    return Container(
+                    return const SizedBox(
                       height: 40,
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: Colors.grey, width: 0.7),
-                        ),
-                      ),
                     );
                   },
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
+                const Padding(
+                  padding: EdgeInsets.all(12.0),
                   child: TextField(
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
-                    style: const TextStyle(fontSize: 16, height: 2),
+                    style: TextStyle(fontSize: 16, height: 2),
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: "Start writing your notes...",
+                      hintText: "Write down your thoughts...",
                     ),
                   ),
                 ),

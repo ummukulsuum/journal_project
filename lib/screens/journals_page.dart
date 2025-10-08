@@ -12,12 +12,16 @@ class _JournalsPageState extends State<JournalsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5EDE6), // soft beige background
+      backgroundColor: Color(0xFFF5EDE6),
+      appBar: AppBar(
+        backgroundColor: Color(0xFFD4AE9F),
+        title:  Text("Journals"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            journals(),
+            journals(), // your journal widget
           ],
         ),
       ),

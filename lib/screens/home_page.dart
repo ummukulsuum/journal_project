@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:journally/screens/journalise_page.dart';
+import 'package:journally/screens/journal_add.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,7 +32,6 @@ class _JournalState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.white.withOpacity(0.3)),
                   ),
-
                   child: Stack(
                     children: [
                       Padding(
@@ -51,7 +50,6 @@ class _JournalState extends State<HomePage> {
                           ],
                         ),
                       ),
-
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Image.asset(
@@ -65,7 +63,6 @@ class _JournalState extends State<HomePage> {
               ),
             ),
           ),
-
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
@@ -85,7 +82,10 @@ class _JournalState extends State<HomePage> {
                 ),
                 child: IconButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Journalise()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const JournalAdd()),
+                    );
                   },
                   icon: Icon(Icons.add, size: 40, color: Colors.white),
                 ),

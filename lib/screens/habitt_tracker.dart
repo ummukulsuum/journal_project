@@ -21,7 +21,7 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title:  Text(
           "Habit Tracker",
           style: TextStyle(
             color: Color.fromARGB(255, 82, 54, 44),
@@ -29,10 +29,10 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 201, 166, 137),
+        backgroundColor:   Color.fromRGBO(212, 191, 182, 1),
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/bg(6).jpeg"),
             fit: BoxFit.cover,
@@ -41,16 +41,13 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            const Text(
-              "Build your best self, one habit at a time ✨",
+             Text(
+              "Build your best self, one habit at a time ",
               style: TextStyle(fontSize: 16, color: Colors.brown),
             ),
-            const SizedBox(height: 4),
-            Text(
-              "Today, September 21",
-              style: TextStyle(fontSize: 14, color: Colors.brown.shade400),
-            ),
-            const SizedBox(height: 16),
+             SizedBox(height: 4),
+
+             SizedBox(height: 16),
             HabitCard(Icons.water_drop, Colors.blue, "Drink Water"),
             HabitCard(Icons.fitness_center, Colors.brown, "Exercise"),
             HabitCard(Icons.book, Colors.brown, "Read 10 mins"),
@@ -66,7 +63,7 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
 
   Widget HabitCard(IconData icon, Color iconColor, String title) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin:  EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.9),
@@ -75,7 +72,7 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
           BoxShadow(
             color: Colors.brown.withOpacity(0.1),
             blurRadius: 6,
-            offset: const Offset(0, 4),
+            offset:  Offset(0, 4),
           ),
         ],
       ),
@@ -85,10 +82,10 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
           Row(
             children: [
               Icon(icon, color: iconColor, size: 28),
-              const SizedBox(width: 12),
+               SizedBox(width: 12),
               Text(
                 title,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.brown,
@@ -96,7 +93,7 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+           SizedBox(height: 8),
           Row(
             children: [
               Checkbox(
@@ -108,11 +105,15 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
                 },
                 activeColor: Colors.brown,
               ),
-              const SizedBox(width: 8),
+               SizedBox(width: 8),
               Text(
-                habits[title]! ? "Completed" : "Mark as done",
+                habits[title]!
+                 ? "Completed" 
+                 : "Mark as done",
                 style: TextStyle(
-                  color: habits[title]! ? Colors.green : Colors.brown,
+                  color: habits[title]! 
+                  ?  Color.fromARGB(255, 52, 118, 54)
+                  : Colors.brown,
                   fontWeight: FontWeight.w500,
                 ),
               ),

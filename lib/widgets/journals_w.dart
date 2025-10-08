@@ -6,39 +6,39 @@ Widget journals() {
       Container(
         height: 120,
         decoration: BoxDecoration(
-          color: const Color(0xFFD7CCC8), // light brown
+          color: Color(0xFFD7CCC8),
           borderRadius: BorderRadius.circular(16),
         ),
       ),
-      const SizedBox(height: 16),
+      SizedBox(height: 16),
       Container(
         height: 120,
         decoration: BoxDecoration(
-          color: const Color(0xFFBCAAA4), // medium brown
+          color: Color(0xFFBCAAA4),
           borderRadius: BorderRadius.circular(16),
         ),
       ),
-      const SizedBox(height: 16),
+      SizedBox(height: 16),
       Container(
         height: 120,
         decoration: BoxDecoration(
-          color: const Color(0xFFA1887F), // soft brown
+          color: Color(0xFFA1887F),
           borderRadius: BorderRadius.circular(16),
         ),
       ),
-      const SizedBox(height: 16),
+      SizedBox(height: 16),
       Container(
         height: 120,
         decoration: BoxDecoration(
-          color: const Color(0xFF8D6E63), // warm brown
+          color: Color(0xFF8D6E63),
           borderRadius: BorderRadius.circular(16),
         ),
       ),
-      const SizedBox(height: 16),
+      SizedBox(height: 16),
       Container(
         height: 120,
         decoration: BoxDecoration(
-          color: const Color(0xFF6D4C41), // deep brown
+          color: Color(0xFF6D4C41),
           borderRadius: BorderRadius.circular(16),
         ),
       ),
