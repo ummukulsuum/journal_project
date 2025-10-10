@@ -21,7 +21,7 @@ class _JournalsPageState extends State<JournalsPage> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            journals(), // your journal widget
+            journals(), 
           ],
         ),
       ),

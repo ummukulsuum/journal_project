@@ -84,7 +84,7 @@ class _JournalState extends State<HomePage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const JournalAdd()),
+                      MaterialPageRoute(builder: (context) =>  JournalAdd()),
                     );
                   },
                   icon: Icon(Icons.add, size: 40, color: Colors.white),

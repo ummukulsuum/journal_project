@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:journally/screens/navigation_bar.dart';
-import 'package:journally/screens/register.dart';
+import 'package:journally/screens/login_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
           SizedBox.expand(
-            child: Image.asset('assets/images/bg(1).jpeg', fit: BoxFit.cover),
+            child: Image.asset(
+              'assets/images/Gemini_Generated_Image_vpfvobvpfvobvpfv.png',
+              fit: BoxFit.fill,
+            ),
           ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  height: 350,
+                  height: 450,
                   width: 320,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(230, 240, 222, 204),
+                    color: Color.fromARGB(170, 230, 209, 188),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
@@ -47,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 40),
                       TextField(
                         decoration: InputDecoration(
-                          fillColor:  Color.fromARGB(255, 249, 231, 215),
+                          fillColor:  Color.fromARGB(255, 239, 224, 211),
                           filled: true,
                           labelText: 'Username',
                           border: OutlineInputBorder(
@@ -60,10 +63,23 @@ class _LoginPageState extends State<LoginPage> {
                       TextField(
                         obscureText: true,
                         decoration: InputDecoration(
-                          fillColor:  Color.fromARGB(255, 249, 231, 215),
+                          fillColor:  Color.fromARGB(255, 239, 224, 211),
                           filled: true,
-
                           labelText: 'Password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          prefixIcon: Icon(Icons.lock_outline_rounded),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+
+                      TextField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          fillColor:  Color.fromARGB(255, 239, 224, 211),
+                          filled: true,
+                          labelText: 'Confirm Password',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -90,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
                           child: Text(
-                            'Login',
+                            'Sign up',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
@@ -102,22 +118,22 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 15),
+                 SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("If you don't have an account, "),
-                    GestureDetector(
+                    Text("If you already have an account, "),
+                    InkWell(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RegisterPage(),
+                            builder: (context) =>  LoginPage(),
                           ),
                         );
                       },
                       child: Text(
-                        'Sign in',
+                        'Login',
                         style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,

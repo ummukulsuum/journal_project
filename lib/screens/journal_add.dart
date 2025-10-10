@@ -10,20 +10,19 @@ class JournalAdd extends StatelessWidget {
       backgroundColor: Color.fromRGBO(212, 174, 160, 1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(212, 174, 160, 1),
-        title: const Text("Journals"),
+        title:  Text("Journals"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.check, size: 28),
+            icon:  Icon(Icons.check, size: 28),
             onPressed: () {
-              // Go back to Bottomnavbar with Journals tab
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) =>  Bottomnavbar(initialIndex: 1)),
-                (route) => false, // remove all previous routes
+                (route) => false,
               );
             },
           ),
-          const SizedBox(width: 20),
+           SizedBox(width: 20),
         ],
       ),
       body: Center(
@@ -35,7 +34,7 @@ class JournalAdd extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
+              boxShadow:  [
                 BoxShadow(
                   color: Colors.black26,
                   blurRadius: 8,
@@ -48,15 +47,14 @@ class JournalAdd extends StatelessWidget {
                 ListView.builder(
                   itemCount: 40,
                   itemBuilder: (context, index) {
-                    return const SizedBox(
+                    return  Container(
                       height: 40,
                     );
                   },
                 ),
-                const Padding(
+                 Padding(
                   padding: EdgeInsets.all(12.0),
                   child: TextField(
-                    keyboardType: TextInputType.multiline,
                     maxLines: null,
                     style: TextStyle(fontSize: 16, height: 2),
                     decoration: InputDecoration(
