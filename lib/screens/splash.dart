@@ -1,38 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:journally/screens/navigation_bar.dart';
 import 'package:journally/screens/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Splash extends StatefulWidget {
-  const Splash({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<Splash> createState() => _SplashState();
+  State<SplashScreen> createState() => _SplashState();
 }
 
-class _SplashState extends State<Splash> {
+class _SplashState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     splash();
   }
+
+  Future<void> splash() async {
+    await Future.delayed(const Duration(seconds: 3));
+    await checkLogin();
+  }
+
+  Future<void> checkLogin() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    bool isLoggedIn = pref.getBool('isLoggedIn') ?? false;
+
+    if (isLoggedIn) {
+      // ✅ Go directly to Bottomnavbar (not just HomePage)
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Bottomnavbar()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(179, 133, 107, 1.0),
+      backgroundColor: const Color.fromRGBO(179, 133, 107, 1.0),
       body: Center(
-        child: Image.asset(
-          'assets/images/journallyy.png',
-          width: 330,
-        ),
+        child: Image.asset('assets/images/journallyy.png', width: 330),
       ),
     );
   }
-  Future splash() async {
-    Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
-      );
-    });
-}
 }

@@ -13,32 +13,35 @@ class _PieChartPageState extends State<PieChartPage> {
 
   @override
   Widget build(BuildContext context) {
-     List<Color> colors = [
-       Color(0xFF4E342E),
-       Color(0xFF6F4E37),
-       Color(0xFF8D6E63),
-       Color(0xFFA1887F),
-       Color(0xFFCBB7A2),
-       Color(0xFFE0C9B7),
+    List<Color> colors = [
+      Color(0xFF4E342E),
+      Color(0xFF6F4E37),
+      Color(0xFF8D6E63),
+      Color(0xFFA1887F),
+      Color(0xFFCBB7A2),
+      Color(0xFFE0C9B7),
+      Color(0xFFD7CCC8),
     ];
 
     List<String> titles = [
-      'Drink water',
+      'Drink Water',
       'Exercise',
       'Read 10 mins',
       'Meditate',
-      'Write journal',
-      'Sleep early'
+      'Write Journal',
+      'Steps Walked',
+      'Push Ups',
     ];
 
     return Scaffold(
-      backgroundColor:  Color.fromRGBO(255, 236, 228, 1),
+      backgroundColor: Color.fromRGBO(255, 236, 228, 1),
       appBar: AppBar(
-        title:  Text(
+        backgroundColor: Colors.brown,
+        title: const Text(
           "Donut Chart",
-          style: TextStyle(color: Color.fromARGB(255, 82, 54, 44)),
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor:  Color.fromARGB(255, 198, 161, 148),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
@@ -48,24 +51,20 @@ class _PieChartPageState extends State<PieChartPage> {
           children: [
             Center(
               child: SizedBox(
-                height: 300,
+                height: 350,
                 child: PieChart(
                   PieChartData(
                     sectionsSpace: 3,
                     centerSpaceRadius: 70,
-                    borderData: FlBorderData(show: false),
                     pieTouchData: PieTouchData(
                       touchCallback: (FlTouchEvent event, pieTouchResponse) {
                         if (pieTouchResponse == null ||
                             pieTouchResponse.touchedSection == null) {
                           return;
                         }
-
-                        final index = pieTouchResponse
-                            .touchedSection!.touchedSectionIndex;
-
                         setState(() {
-                          touchedIndex = index;
+                          touchedIndex = pieTouchResponse
+                              .touchedSection!.touchedSectionIndex;
                         });
                       },
                     ),
@@ -74,7 +73,7 @@ class _PieChartPageState extends State<PieChartPage> {
                 ),
               ),
             ),
-             SizedBox(height: 40),
+            SizedBox(height: 40),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: List.generate(titles.length, (i) {
@@ -90,13 +89,10 @@ class _PieChartPageState extends State<PieChartPage> {
                           borderRadius: BorderRadius.circular(3),
                         ),
                       ),
-                       SizedBox(width: 10),
+                      SizedBox(width: 10),
                       Text(
                         titles[i],
-                        style:  TextStyle(
-                          fontSize: 14,
-                          color: Colors.black87,
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.black87),
                       ),
                     ],
                   ),
@@ -110,18 +106,11 @@ class _PieChartPageState extends State<PieChartPage> {
   }
 
   List<PieChartSectionData> buildSections(List<Color> colors) {
-    final List<double> values = [16.6, 16.6, 16.6, 16.6, 16.6, 16.6];
-
-    return List.generate(6, (i) {
+    return List.generate(7, (i) {
       final bool isTouched = i == touchedIndex;
       final double radius = isTouched ? 110 : 80;
 
-      return PieChartSectionData(
-        color: colors[i],
-        value: values[i],
-        radius: radius,
-        showTitle: false,
-      );
+      return PieChartSectionData(color: colors[i], radius: radius);
     });
   }
 }

@@ -13,10 +13,6 @@ class _JournalsPageState extends State<JournalsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF5EDE6),
-      appBar: AppBar(
-        backgroundColor: Color(0xFFD4AE9F),
-        title:  Text("Journals"),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(

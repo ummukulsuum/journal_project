@@ -8,84 +8,82 @@ class HabitTrackerPage extends StatefulWidget {
 }
 
 class _HabitTrackerPageState extends State<HabitTrackerPage> {
-   Map<String, bool> habits = {
-    "Drink Water": false,
-    "Exercise": false,
-    "Read 10 mins": false,
-    "Meditate": false,
-    "Write Journal": false,
-    "Sleep Early": false,
+  // Each habit now has type (count/time) and value
+  Map<String, Map<String, dynamic>> habits = {
+    "Drink Water": {"type": "count", "value": 0},
+    "Exercise": {"type": "time", "value": 0},
+    "Read 10 mins": {"type": "time", "value": 0},
+    "Meditate": {"type": "time", "value": 0},
+    "Write Journal": {"type": "count", "value": 0},
+    "Steps Walked": {"type": "count", "value": 0},
+    "Push Ups": {"type": "count", "value": 0},
+  };
+
+  final Map<String, dynamic> habitDetails = {
+    "Drink Water": {"icon": Icons.water_drop, "color": Colors.blue},
+    "Exercise": {"icon": Icons.fitness_center, "color": Colors.redAccent},
+    "Read 10 mins": {"icon": Icons.book, "color": Colors.orange},
+    "Meditate": {"icon": Icons.self_improvement, "color": Colors.green},
+    "Write Journal": {"icon": Icons.edit_note, "color": Colors.brown},
+    "Steps Walked": {"icon": Icons.directions_walk, "color": Colors.purple},
+    "Push Ups": {"icon": Icons.sports_gymnastics, "color": Colors.indigo},
   };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 228, 214, 202),
       appBar: AppBar(
-        title:  Text(
+        backgroundColor: Colors.brown,
+        title: const Text(
           "Habit Tracker",
-          style: TextStyle(
-            color: Color.fromARGB(255, 82, 54, 44),
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor:   Color.fromRGBO(212, 191, 182, 1),
       ),
-      body: Container(
-        decoration:  BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/bg(6).jpeg"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-             Text(
-              "Build your best self, one habit at a time ",
-              style: TextStyle(fontSize: 16, color: Colors.brown),
-            ),
-             SizedBox(height: 4),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: habits.length,
+        itemBuilder: (context, index) {
+          String title = habits.keys.elementAt(index);
+          IconData icon = habitDetails[title]["icon"];
+          Color color = habitDetails[title]["color"];
+          String type = habits[title]!["type"];
 
-             SizedBox(height: 16),
-            HabitCard(Icons.water_drop, Colors.blue, "Drink Water"),
-            HabitCard(Icons.fitness_center, Colors.brown, "Exercise"),
-            HabitCard(Icons.book, Colors.brown, "Read 10 mins"),
-            HabitCard(Icons.self_improvement, Colors.green, "Meditate"),
-            HabitCard(Icons.edit_note, Colors.orange, "Write Journal"),
-            HabitCard(Icons.bedtime, Colors.purple, "Sleep Early"),
-             SizedBox(height: 60),
-          ],
-        ),
+          return HabitCard(title, icon, color, type);
+        },
       ),
     );
   }
 
-  Widget HabitCard(IconData icon, Color iconColor, String title) {
+  Widget HabitCard(String title, IconData icon, Color color, String type) {
+    int value = habits[title]!["value"];
+
     return Container(
-      margin:  EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.9),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.brown.withOpacity(0.1),
-            blurRadius: 6,
-            offset:  Offset(0, 4),
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 3,
+            offset: const Offset(2, 4),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Row 1: Icon + Title
           Row(
             children: [
-              Icon(icon, color: iconColor, size: 28),
-               SizedBox(width: 12),
+              Icon(icon, color: color, size: 28),
+              const SizedBox(width: 12),
               Text(
                 title,
-                style:  TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.brown,
@@ -93,29 +91,45 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
               ),
             ],
           ),
-           SizedBox(height: 8),
+          const SizedBox(height: 12),
+
+          // Row 2: Counter or Time Tracker
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Checkbox(
-                value: habits[title],
-                onChanged: (value) {
-                  setState(() {
-                    habits[title] = value ?? false;
-                  });
-                },
-                activeColor: Colors.brown,
-              ),
-               SizedBox(width: 8),
               Text(
-                habits[title]!
-                 ? "Completed" 
-                 : "Mark as done",
-                style: TextStyle(
-                  color: habits[title]! 
-                  ?  Color.fromARGB(255, 52, 118, 54)
-                  : Colors.brown,
+                type == "count" ? "Count: $value" : "Time: $value min",
+                style: const TextStyle(
+                  fontSize: 15,
                   fontWeight: FontWeight.w500,
+                  color: Colors.brown,
                 ),
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.remove_circle_outline),
+                    color: Colors.brown,
+                    onPressed: () {
+                      setState(() {
+                        if (value > 0) {
+                          habits[title]!["value"] =
+                              value - (type == "count" ? 1 : 5);
+                        }
+                      });
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add_circle_outline),
+                    color: Colors.brown,
+                    onPressed: () {
+                      setState(() {
+                        habits[title]!["value"] =
+                            value + (type == "count" ? 1 : 5);
+                      });
+                    },
+                  ),
+                ],
               ),
             ],
           ),

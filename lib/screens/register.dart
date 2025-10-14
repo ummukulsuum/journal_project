@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:journally/screens/navigation_bar.dart';
 import 'package:journally/screens/login_page.dart';
+import 'package:journally/screens/navigation_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -10,6 +11,38 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController usernamecontroller = TextEditingController();
+  final TextEditingController passwordcontroller = TextEditingController();
+  final TextEditingController confirmpasscontroller = TextEditingController();
+
+  void registerUser() async {
+    String username = usernamecontroller.text.trim();
+    String password = passwordcontroller.text.trim();
+    String confirmpassword = confirmpasscontroller.text.trim();
+
+    if (username.isEmpty || password.isEmpty || confirmpassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please fill all fields')));
+      return;
+    }
+
+    if (password != confirmpassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Passwords do not match')));
+      return;
+    }
+
+    // Save data in SharedPreferences
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setString('username', username);
+    await pref.setString('password', password);
+    await pref.setBool('isLoggedIn', true);
+    await pref.setBool('isRegistered', true); // <-- Added
+
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const Bottomnavbar()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,115 +63,95 @@ class _RegisterPageState extends State<RegisterPage> {
                   width: 320,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(170, 230, 209, 188),
+                    color: const Color.fromARGB(170, 230, 209, 188),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.2),
                         blurRadius: 10,
-                        offset: Offset(2, 4),
+                        offset: const Offset(2, 4),
                       ),
                     ],
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/images/journallylogo.png',
-                        width: 180,
-                      ),
-                      SizedBox(height: 40),
+                      Image.asset('assets/images/journallylogo.png', width: 180),
+                      const SizedBox(height: 40),
                       TextField(
+                        controller: usernamecontroller,
                         decoration: InputDecoration(
-                          fillColor:  Color.fromARGB(255, 239, 224, 211),
+                          fillColor: const Color.fromARGB(255, 239, 224, 211),
                           filled: true,
                           labelText: 'Username',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          prefixIcon: Icon(Icons.person_outlined),
+                              borderRadius: BorderRadius.circular(10)),
+                          prefixIcon: const Icon(Icons.person_outlined),
                         ),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       TextField(
+                        controller: passwordcontroller,
                         obscureText: true,
                         decoration: InputDecoration(
-                          fillColor:  Color.fromARGB(255, 239, 224, 211),
+                          fillColor: const Color.fromARGB(255, 239, 224, 211),
                           filled: true,
                           labelText: 'Password',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          prefixIcon: Icon(Icons.lock_outline_rounded),
+                              borderRadius: BorderRadius.circular(10)),
+                          prefixIcon: const Icon(Icons.lock_outline_rounded),
                         ),
                       ),
-                      SizedBox(height: 15),
-
+                      const SizedBox(height: 15),
                       TextField(
+                        controller: confirmpasscontroller,
                         obscureText: true,
                         decoration: InputDecoration(
-                          fillColor:  Color.fromARGB(255, 239, 224, 211),
+                          fillColor: const Color.fromARGB(255, 239, 224, 211),
                           filled: true,
                           labelText: 'Confirm Password',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          prefixIcon: Icon(Icons.lock_outline_rounded),
+                              borderRadius: BorderRadius.circular(10)),
+                          prefixIcon: const Icon(Icons.lock_outline_rounded),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       SizedBox(
                         width: 270,
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Bottomnavbar(),
-                              ),
-                            );
-                          },
+                          onPressed: registerUser,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 164, 112, 67),
+                            backgroundColor: const Color.fromARGB(255, 164, 112, 67),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+                                borderRadius: BorderRadius.circular(10)),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
-                          child: Text(
-                            'Sign up',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: const Text('Sign up',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold)),
                         ),
                       ),
                     ],
                   ),
                 ),
-                 SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("If you already have an account, "),
+                    const Text("If you already have an account, "),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>  LoginPage(),
-                          ),
-                        );
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()));
                       },
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: const Text('Login',
+                          style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
