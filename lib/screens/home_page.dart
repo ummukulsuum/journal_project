@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart'; 
+import 'package:image_picker/image_picker.dart';
+import 'package:journally/models/journal_model.dart';
+// import 'package:journally/screens/journals_page.dart';
 import 'dart:io';
 import 'package:journally/screens/navigation_bar.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+// import 'journal_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,22 +16,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   DateTime selectedDate = DateTime.now();
-  File? _image;
+  File? image;
   final picker = ImagePicker();
 
   final TextEditingController headingController = TextEditingController();
   final TextEditingController textController = TextEditingController();
 
-  Future<void> _pickImage() async {
+  Future<void> pickImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        image = File(pickedFile.path);
       });
     }
   }
 
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
@@ -53,11 +57,39 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.check, size: 28, color: Color.fromARGB(255, 73, 27, 11)),
-            onPressed: () {
+            icon: Icon(
+              Icons.check,
+              size: 28,
+              color: Color.fromARGB(255, 73, 27, 11),
+            ),
+            onPressed: () async {
+              if (headingController.text.isEmpty ||
+                  textController.text.isEmpty ||
+                  image == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Please fill all fields')),
+                );
+                return;
+              }
+              final journalsBox = Hive.box<JournalModel>('journalsBox');
+
+              final newJournal = JournalModel(
+                date: selectedDate,
+                heading: headingController.text,
+                imagePath: image!.path,
+                notes: textController.text,
+              );
+
+              await journalsBox.add(newJournal);
+
+              headingController.clear();
+              textController.clear();
+              setState(() => image = null);
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => Bottomnavbar(initialIndex: 1)),
+                MaterialPageRoute(
+                  builder: (context) => Bottomnavbar(initialIndex: 1),
+                ),
                 (route) => false,
               );
             },
@@ -93,11 +125,17 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Text(
                         "Date: ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}",
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.calendar_today, color: Colors.brown),
-                        onPressed: () => _selectDate(context),
+                        icon: const Icon(
+                          Icons.calendar_today,
+                          color: Colors.brown,
+                        ),
+                        onPressed: () => selectDate(context),
                       ),
                     ],
                   ),
@@ -115,7 +153,7 @@ class _HomePageState extends State<HomePage> {
 
                   // 🖼 Add Photo
                   GestureDetector(
-                    onTap: _pickImage,
+                    onTap: pickImage,
                     child: Container(
                       height: 180,
                       width: double.infinity,
@@ -124,12 +162,16 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: Colors.brown.shade200),
                       ),
-                      child: _image == null
+                      child: image == null
                           ? const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.add_a_photo, size: 40, color: Colors.brown),
+                                  Icon(
+                                    Icons.add_a_photo,
+                                    size: 40,
+                                    color: Colors.brown,
+                                  ),
                                   SizedBox(height: 8),
                                   Text("Tap to add photo"),
                                 ],
@@ -138,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                           : ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.file(
-                                _image!,
+                                image!,
                                 fit: BoxFit.cover,
                                 width: double.infinity,
                               ),
@@ -147,11 +189,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 12),
 
-                  // 💬 Journal Text
                   TextField(
                     controller: textController,
                     maxLines: 10,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: "Write your thoughts...",
                       border: OutlineInputBorder(),
                       alignLabelWithHint: true,

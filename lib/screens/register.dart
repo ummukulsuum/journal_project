@@ -166,13 +166,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           controller: dobcontroller,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
-                            fillColor: const Color.fromARGB(255, 239, 224, 211),
+                            fillColor:  Color.fromARGB(255, 239, 224, 211),
                             filled: true,
                             labelText: 'Date of Birth',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            prefixIcon: const Icon(Icons.cake_outlined),
+                            prefixIcon:  Icon(Icons.cake_outlined),
                           ),
                           readOnly: true,
                           onTap: () async {
