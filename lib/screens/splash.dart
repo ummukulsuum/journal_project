@@ -27,7 +27,6 @@ class _SplashState extends State<SplashScreen> {
     bool isLoggedIn = pref.getBool('isLoggedIn') ?? false;
 
     if (isLoggedIn) {
-      // ✅ Go directly to Bottomnavbar (not just HomePage)
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const Bottomnavbar()),
