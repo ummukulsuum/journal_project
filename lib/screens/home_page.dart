@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:journally/models/journal_model.dart';
-// import 'package:journally/screens/journals_page.dart';
 import 'dart:io';
 import 'package:journally/screens/navigation_bar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-// import 'journal_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

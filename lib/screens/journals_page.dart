@@ -41,7 +41,7 @@ class _JournalsPageState extends State<JournalsPage> {
             itemCount: box.length,
             itemBuilder: (context, index) {
               final journal = box.getAt(index)!;
-              return _buildJournalCard(journal, index);
+              return buildJournalCard(journal, index);
             },
           );
         },
@@ -50,7 +50,7 @@ class _JournalsPageState extends State<JournalsPage> {
   }
 
   // ✅ Journal card widget
-  Widget _buildJournalCard(JournalModel journal, int index) {
+  Widget buildJournalCard(JournalModel journal, int index) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
@@ -154,7 +154,7 @@ class _JournalsPageState extends State<JournalsPage> {
                     Text(
                         "Date: ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}"),
                     IconButton(
-                      icon: const Icon(Icons.calendar_today),
+                      icon:  Icon(Icons.calendar_today),
                       onPressed: () async {
                         final DateTime? picked = await showDatePicker(
                           context: context,
