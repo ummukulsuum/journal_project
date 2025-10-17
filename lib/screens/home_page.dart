@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:journally/models/journal_model.dart';
 import 'dart:io';
-import 'package:journally/screens/navigation_bar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +18,6 @@ class _HomePageState extends State<HomePage> {
 
   final TextEditingController headingController = TextEditingController();
   final TextEditingController textController = TextEditingController();
-
   Future<void> pickImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -82,14 +80,15 @@ class _HomePageState extends State<HomePage> {
 
               headingController.clear();
               textController.clear();
+              
               setState(() => image = null);
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Bottomnavbar(initialIndex: 1),
-                ),
-                (route) => false,
-              );
+              // Navigator.pushAndRemoveUntil(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => Bottomnavbar(initialIndex: 1),
+              //   ),
+              //   (route) => false,
+              // );
             },
           ),
           const SizedBox(width: 20),

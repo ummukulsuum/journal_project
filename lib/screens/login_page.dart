@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:journally/screens/register.dart';
 import 'package:journally/screens/navigation_bar.dart';

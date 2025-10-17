@@ -49,7 +49,6 @@ class _JournalsPageState extends State<JournalsPage> {
     );
   }
 
-  // ✅ Journal card widget
   Widget buildJournalCard(JournalModel journal, int index) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -190,9 +189,7 @@ class _JournalsPageState extends State<JournalsPage> {
                     height: 150,
                     width: double.infinity,
                     color: const Color(0xFFF5E6D9),
-                    child: imageFile == null
-                        ? const Center(child: Text("Tap to pick image"))
-                        : Image.file(imageFile!, fit: BoxFit.cover),
+                    child: Image.file(imageFile!, fit: BoxFit.cover),
                   ),
                 ),
 
