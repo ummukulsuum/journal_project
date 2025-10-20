@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:journally/models/journal_model.dart';
+// import 'package:journally/models/journal_model.g.dart';
 import 'package:journally/screens/splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive and register adapter
   await Hive.initFlutter();
-  Hive.registerAdapter(JournalModelAdapter());
+  Hive.registerAdapter(JournalModelAdapter()); 
+
   await Hive.openBox<JournalModel>('journalsBox');
+
   runApp(const MyApp());
 }
 

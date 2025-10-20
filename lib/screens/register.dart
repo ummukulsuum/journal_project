@@ -177,10 +177,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               firstDate: DateTime(2000),
                               lastDate: DateTime.now(),
                             );
-                            if (pickedDate != null) {
-                              dobController.text = "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-                            }
-                          },
+                            dobController.text = "${pickedDate?.day}/${pickedDate?.month}/${pickedDate?.year}";
+                                                    },
                         ),
                         const SizedBox(height: 15),
                         TextField(

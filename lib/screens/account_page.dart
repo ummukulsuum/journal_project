@@ -34,10 +34,8 @@ Future<void> loadUserData() async {
     dobController.text = pref.getString('dob') ?? '';
 
     String? imagePath = pref.getString('profileImage');
-    if (imagePath != null) {
-      profileImage = File(imagePath);
-    }
-  });
+    profileImage = File(imagePath!);
+    });
 }
 
 
@@ -204,13 +202,11 @@ void showImageOptions() {
                           firstDate: DateTime(1900),
                           lastDate: DateTime.now(),
                         );
-                        if (picked != null) {
-                          setState(() {
-                            dobController.text =
-                                "${picked.day}/${picked.month}/${picked.year}";
-                          });
-                        }
-                      }
+                        setState(() {
+                          dobController.text =
+                              "${picked?.day}/${picked?.month}/${picked?.year}";
+                        });
+                                            }
                     : null,
               ),
               const SizedBox(height: 30),
