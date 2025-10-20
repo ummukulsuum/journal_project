@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:journally/screens/habitt_tracker.dart';
 import 'package:journally/screens/home_page.dart';
+
 import 'package:journally/screens/journals_page.dart';
 import 'package:journally/screens/pie_chart.dart';
 import 'package:journally/screens/account_page.dart';
 
 class Bottomnavbar extends StatefulWidget {
-  final int initialIndex; // ✅ added this line for fix
-  const Bottomnavbar({super.key, this.initialIndex = 0}); // ✅ default 0
+  final int initialIndex; 
+  const Bottomnavbar({super.key, this.initialIndex = 0}); 
 
   @override
   State<Bottomnavbar> createState() => _BottomnavbarState();

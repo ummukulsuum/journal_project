@@ -3,6 +3,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:journally/models/journal_model.dart';
 import 'dart:io';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:journally/screens/navigation_bar.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -63,8 +65,9 @@ class _HomePageState extends State<HomePage> {
                   textController.text.isEmpty ||
                   image == null) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Please fill all fields')),
+                 const SnackBar(content: Text('Please fill all fields')),
                 );
+                
                 return;
               }
               final journalsBox = Hive.box<JournalModel>('journalsBox');
@@ -82,13 +85,13 @@ class _HomePageState extends State<HomePage> {
               textController.clear();
               
               setState(() => image = null);
-              // Navigator.pushAndRemoveUntil(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => Bottomnavbar(initialIndex: 1),
-              //   ),
-              //   (route) => false,
-              // );
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Bottomnavbar(initialIndex: 1),
+                ),
+                (route) => false,
+              );
             },
           ),
           const SizedBox(width: 20),
