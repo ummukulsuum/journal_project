@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:journally/screens/habitdata.dart';
-import 'package:journally/screens/pie_chart.dart';
 
 class HabitTrackerPage extends StatefulWidget {
   const HabitTrackerPage({super.key});
@@ -23,20 +22,46 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.pie_chart),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => PieChartPage(
-                    onReturn: () => setState(() {}), // Refresh after returning
+        actions: [          
+          Tooltip(
+            message: 'Reset all data', // Text shown on hover
+            child: IconButton(
+              icon: const Icon(
+                Icons.settings_backup_restore_sharp,
+                color: Colors.white,
+              ),
+              tooltip:
+                  'Clear All Habits', // Optional, shows on long press for mobile
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Reset All Habits'),
+                    content: const Text(
+                      'Are you sure you want to reset all habit data?',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            for (var key in HabitData.habits.keys) {
+                              HabitData.habits[key]!['value'] = 0;
+                            }
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Reset'),
+                      ),
+                    ],
                   ),
-                ),
-              );
-            },
-          )
+                );
+              },
+            ),
+          ),
         ],
       ),
       body: ListView.builder(
@@ -69,7 +94,7 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
             blurRadius: 12,
             spreadRadius: 2,
             offset: const Offset(0, 6),
-          )
+          ),
         ],
       ),
       child: Row(
@@ -97,7 +122,7 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -120,12 +145,22 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
                 ),
                 child: Icon(Icons.remove, color: Colors.brown[700]),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
+              // Show the exact number from pie chart
+              Text(
+                "$value",
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.brown,
+                ),
+              ),
+              const SizedBox(width: 12),
               ElevatedButton(
                 onPressed: () {
                   setState(() {
                     HabitData.habits[title]!['value'] =
-                        value + (type == 'count' ? 1 : 5);
+                        value + (type == 'count' ? 1 : 1);
                   });
                 },
                 style: ElevatedButton.styleFrom(
@@ -137,7 +172,7 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
                 child: Icon(Icons.add, color: Colors.brown[700]),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
