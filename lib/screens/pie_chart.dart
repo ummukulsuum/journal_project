@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:journally/screens/habitdata.dart';
 
 class PieChartPage extends StatefulWidget {
-  const PieChartPage({super.key});
+  final VoidCallback? onReturn;
+
+  const PieChartPage({super.key, this.onReturn});
 
   @override
   State<PieChartPage> createState() => _PieChartPageState();
@@ -13,41 +16,35 @@ class _PieChartPageState extends State<PieChartPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Color> colors = [
-      Color(0xFF4E342E),
-      Color(0xFF6F4E37),
-      Color(0xFF8D6E63),
-      Color(0xFFA1887F),
-      Color(0xFFCBB7A2),
-      Color(0xFFE0C9B7),
-      Color(0xFFD7CCC8),
-    ];
+    List<String> titles = HabitData.habits.keys.toList();
+    List<Color> colors = titles
+        .map((title) => HabitData.habitDetails[title]!['color'] as Color)
+        .toList();
 
-    List<String> titles = [
-      'Drink Water',
-      'Exercise',
-      'Read 10 mins',
-      'Meditate',
-      'Write Journal',
-      'Steps Walked',
-      'Push Ups',
-    ];
+    int totalValue = HabitData.habits.values
+        .map<int>((v) => v['value'] as int)
+        .fold(0, (a, b) => a + b);
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 236, 228, 1),
+      backgroundColor: const Color(0xFFFFECE4),
       appBar: AppBar(
         backgroundColor: Colors.brown,
         title: const Text(
-          "Donut Chart",
+          "Habit Pie Chart",
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            widget.onReturn?.call();
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        padding: const EdgeInsets.all(20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
               child: SizedBox(
@@ -55,62 +52,74 @@ class _PieChartPageState extends State<PieChartPage> {
                 child: PieChart(
                   PieChartData(
                     sectionsSpace: 3,
-                    centerSpaceRadius: 70,
+                    centerSpaceRadius: 70.0,
                     pieTouchData: PieTouchData(
-                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                        if (pieTouchResponse == null ||
-                            pieTouchResponse.touchedSection == null) {
+                      touchCallback: (event, response) {
+                        if (response == null || response.touchedSection == null)
                           return;
-                        }
                         setState(() {
-                          touchedIndex = pieTouchResponse
-                              .touchedSection!.touchedSectionIndex;
+                          touchedIndex =
+                              response.touchedSection!.touchedSectionIndex;
                         });
                       },
                     ),
-                    sections: buildSections(colors),
+                    sections: buildSections(titles, colors, totalValue),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 40),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: List.generate(titles.length, (i) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 18,
-                        height: 18,
-                        decoration: BoxDecoration(
-                          color: colors[i],
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        titles[i],
-                        style: TextStyle(fontSize: 14, color: Colors.black87),
-                      ),
-                    ],
-                  ),
-                );
-              }),
+            const SizedBox(height: 30),
+            Expanded(
+  child: ListView.builder(
+    itemCount: titles.length,
+    itemBuilder: (context, i) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          children: [
+            Container(
+              width: 18,
+              height: 18,
+              decoration: BoxDecoration(
+                color: colors[i],
+                borderRadius: BorderRadius.circular(3),
+              ),
             ),
+            const SizedBox(width: 10),
+            Text(
+              titles[i],
+              style: const TextStyle(
+                  fontSize: 14, color: Colors.brown),
+            ),
+          ],
+        ),
+      );
+    },
+  ),
+)
+
           ],
         ),
       ),
     );
   }
 
-  List<PieChartSectionData> buildSections(List<Color> colors) {
-    return List.generate(7, (i) {
-      final bool isTouched = i == touchedIndex;
-      final double radius = isTouched ? 110 : 80;
+  List<PieChartSectionData> buildSections(
+      List<String> titles, List<Color> colors, int totalValue) {
+    return List.generate(titles.length, (i) {
+      final isTouched = i == touchedIndex;
+      final radius = isTouched ? 110.0 : 80.0;
+      final value = HabitData.habits[titles[i]]!['value'] as int;
+      final percent = totalValue == 0 ? 0 : ((value / totalValue) * 100);
 
-      return PieChartSectionData(color: colors[i], radius: radius);
+      return PieChartSectionData(
+        color: colors[i],
+        value: value.toDouble(),
+        radius: radius,
+        title: percent > 0 ? '${percent.round()}%' : '',
+        titleStyle: const TextStyle(
+            fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+      );
     });
   }
 }

@@ -6,7 +6,7 @@ import 'package:journally/screens/home_page.dart';
 
 import 'package:journally/screens/journals_page.dart';
 import 'package:journally/screens/account_page.dart';
-import 'package:journally/screens/pie_chart.dart';
+import 'package:journally/screens/pie_chart.dart' hide HabitTrackerPage;
 
 class Bottomnavbar extends StatefulWidget {
   final int initialIndex; 
