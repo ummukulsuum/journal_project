@@ -23,21 +23,21 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.pie_chart),
-        //     onPressed: () {
-        //       Navigator.push(
-        //         context,
-        //         MaterialPageRoute(
-        //           builder: (_) => PieChartPage(
-        //             onReturn: () => setState(() {}), // Refresh after returning
-        //           ),
-        //         ),
-        //       );
-        //     },
-        //   )
-        // ],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.pie_chart),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => PieChartPage(
+                    onReturn: () => setState(() {}), // Refresh after returning
+                  ),
+                ),
+              );
+            },
+          )
+        ],
       ),
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -120,16 +120,7 @@ class _HabitTrackerPageState extends State<HabitTrackerPage> {
                 ),
                 child: Icon(Icons.remove, color: Colors.brown[700]),
               ),
-              const SizedBox(width: 12),
-              // Show current habit value
-              Text(
-                "$value",
-                style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.brown),
-              ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               ElevatedButton(
                 onPressed: () {
                   setState(() {

@@ -21,10 +21,6 @@ class _PieChartPageState extends State<PieChartPage> {
         .map((title) => HabitData.habitDetails[title]!['color'] as Color)
         .toList();
 
-    int totalValue = HabitData.habits.values
-        .map<int>((v) => v['value'] as int)
-        .fold(0, (a, b) => a + b);
-
     return Scaffold(
       backgroundColor: const Color(0xFFFFECE4),
       appBar: AppBar(
@@ -63,62 +59,63 @@ class _PieChartPageState extends State<PieChartPage> {
                         });
                       },
                     ),
-                    sections: buildSections(titles, colors, totalValue),
+                    sections: buildSections(titles, colors),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 30),
             Expanded(
-  child: ListView.builder(
-    itemCount: titles.length,
-    itemBuilder: (context, i) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Row(
-          children: [
-            Container(
-              width: 18,
-              height: 18,
-              decoration: BoxDecoration(
-                color: colors[i],
-                borderRadius: BorderRadius.circular(3),
+              child: ListView.builder(
+                itemCount: titles.length,
+                itemBuilder: (context, i) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 18,
+                          height: 18,
+                          decoration: BoxDecoration(
+                            color: colors[i],
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          titles[i],
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.brown),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          '${HabitData.habits[titles[i]]!['value']}',
+                          style: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              titles[i],
-              style: const TextStyle(
-                  fontSize: 14, color: Colors.brown),
-            ),
-          ],
-        ),
-      );
-    },
-  ),
-)
-
+            )
           ],
         ),
       ),
     );
   }
 
-  List<PieChartSectionData> buildSections(
-      List<String> titles, List<Color> colors, int totalValue) {
+  List<PieChartSectionData> buildSections(List<String> titles, List<Color> colors) {
     return List.generate(titles.length, (i) {
       final isTouched = i == touchedIndex;
-      final radius = isTouched ? 110.0 : 80.0;
+      final radius = isTouched ? 110.0 : 80.0; // Make sure it's double
       final value = HabitData.habits[titles[i]]!['value'] as int;
-      final percent = totalValue == 0 ? 0 : ((value / totalValue) * 100);
 
       return PieChartSectionData(
         color: colors[i],
         value: value.toDouble(),
         radius: radius,
-        title: percent > 0 ? '${percent.round()}%' : '',
-        titleStyle: const TextStyle(
-            fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+        title: '',
       );
     });
   }

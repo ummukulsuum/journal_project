@@ -15,7 +15,7 @@ class HabitData {
   };
 
   static Map<String, Map<String, dynamic>> habitDetails = {
-    "Code Practice": {"icon": Icons.code, "color": Color(0xFFD7CCC8)},
+    "Code Practice": {"icon": Icons.code, "color": Color.fromARGB(255, 85, 53, 42)},
     "Read Docs": {"icon": Icons.menu_book, "color": Color(0xFFBCAAA4)},
     "Push Commits": {"icon": Icons.cloud_upload, "color": Color(0xFFA1887F)},
     "Daily Standup": {"icon": Icons.group, "color": Color(0xFF8D6E63)},
