@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Bottomnavbar()),
+        MaterialPageRoute(builder: (context) => const Bottomnavbar(currentUserId: '',)),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

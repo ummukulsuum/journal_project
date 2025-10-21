@@ -1,41 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'habit_model.dart';
+part of 'goal_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class HabitModelAdapter extends TypeAdapter<HabitModel> {
+class GoalModelAdapter extends TypeAdapter<GoalModel> {
   @override
   final int typeId = 1;
 
   @override
-  HabitModel read(BinaryReader reader) {
+  GoalModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return HabitModel(
+    return GoalModel(
       title: fields[0] as String,
-      type: fields[1] as String,
-      value: fields[2] as int,
-      userId: fields[3] as String,
+      isCompleted: fields[1] as bool,
     );
   }
 
   @override
-  void write(BinaryWriter writer, HabitModel obj) {
+  void write(BinaryWriter writer, GoalModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.type)
-      ..writeByte(2)
-      ..write(obj.value)
-      ..writeByte(3)
-      ..write(obj.userId);
+      ..write(obj.isCompleted);
   }
 
   @override
@@ -44,7 +38,7 @@ class HabitModelAdapter extends TypeAdapter<HabitModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is HabitModelAdapter &&
+      other is GoalModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

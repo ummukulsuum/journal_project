@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:journally/screens/habitt_tracker.dart';
+import 'package:journally/screens/goal_chart.dart';
+import 'package:journally/screens/goal_track.dart';
 import 'package:journally/screens/home_page.dart';
 import 'package:journally/screens/journals_page.dart';
 import 'package:journally/screens/account_page.dart';
-import 'package:journally/screens/pie_chart.dart';
 
 class Bottomnavbar extends StatefulWidget {
-  final int initialIndex; 
-  const Bottomnavbar({super.key, this.initialIndex = 0});
+  final int initialIndex;
+  final String currentUserId;
+
+  const Bottomnavbar({super.key, this.initialIndex = 0, required this.currentUserId});
 
   @override
   State<Bottomnavbar> createState() => _BottomnavbarState();
@@ -25,12 +27,12 @@ class _BottomnavbarState extends State<Bottomnavbar> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> body = const [
-      HomePage(),
-      JournalsPage(),
-      PieChartPage(),
-      HabitTrackerPage(),
-      AccountPage(),
+    List<Widget> body = [
+      const HomePage(),
+      JournalsPage(currentUserId: widget.currentUserId),
+      GoalChartPage(currentUserId: widget.currentUserId),
+      GoalTrackerPage(currentUserId: widget.currentUserId),
+      AccountPage(currentUserId: widget.currentUserId),
     ];
 
     List<Color> buttonColors = [

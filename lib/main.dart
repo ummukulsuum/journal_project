@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:journally/models/habit_model.dart';
-import 'package:journally/models/journal_model.dart';
+import 'package:journally/models/goal_model.dart';
 import 'package:journally/screens/splash.dart';
+import 'package:journally/models/journal_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Hive.initFlutter();
 
-  Hive.registerAdapter(HabitModelAdapter());
+  // Register Hive adapters
   Hive.registerAdapter(JournalModelAdapter());
+  Hive.registerAdapter(GoalModelAdapter());
 
   runApp(const MyApp());
 }

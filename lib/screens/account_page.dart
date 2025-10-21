@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
 
 class AccountPage extends StatefulWidget {
-  const AccountPage({super.key});
+  const AccountPage({super.key, required String currentUserId});
 
   @override
   State<AccountPage> createState() => _AccountPageState();
@@ -38,7 +38,7 @@ class _AccountPageState extends State<AccountPage> {
         dobController.text = pref.getString('dob_$currentUser') ?? '';
 
         String? imagePath = pref.getString('profileImage_$currentUser');
-        if (imagePath != null && imagePath.isNotEmpty) {
+        if (imagePath!.isNotEmpty) {
           profileImage = File(imagePath);
         }
       });
@@ -189,12 +189,10 @@ class _AccountPageState extends State<AccountPage> {
                           firstDate: DateTime(1900),
                           lastDate: DateTime.now(),
                         );
-                        if (picked != null) {
-                          setState(() {
-                            dobController.text = "${picked.day}/${picked.month}/${picked.year}";
-                          });
-                        }
-                      }
+                        setState(() {
+                          dobController.text = "${picked?.day}/${picked?.month}/${picked?.year}";
+                        });
+                                            }
                     : null,
               ),
               const SizedBox(height: 30),

@@ -24,7 +24,6 @@ class _RegisterPageState extends State<RegisterPage> {
     String password = passwordController.text.trim();
     String confirmPassword = confirmPassController.text.trim();
 
-    // 1️⃣ All fields must be filled
     if (username.isEmpty ||
         email.isEmpty ||
         dob.isEmpty ||
@@ -45,7 +44,6 @@ class _RegisterPageState extends State<RegisterPage> {
       );
       return;
     }
-// 2️⃣ Email validation
 if (email.isEmpty ||
     !email.endsWith('@gmail.com') ||
     email.split('@')[0].isEmpty) {
@@ -67,7 +65,6 @@ if (email.isEmpty ||
 }
 
 
-    // 3️⃣ Password match
     if (password != confirmPassword) {
       showDialog(
         context: context,
@@ -89,20 +86,17 @@ if (email.isEmpty ||
 
   
 
-    // 5️⃣ Save user data
     await prefs.setString('username_$username', username);
     await prefs.setString('email_$username', email);
     await prefs.setString('dob_$username', dob);
     await prefs.setString('password_$username', password);
     await prefs.setBool('isRegistered_$username', true);
-
-    // 6️⃣ Set current user
     await prefs.setString('currentUser', username);
     await prefs.setBool('isLoggedIn', true);
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => const Bottomnavbar()),
+      MaterialPageRoute(builder: (_) => const Bottomnavbar(currentUserId: '',)),
     );
   }
 
@@ -159,7 +153,6 @@ if (email.isEmpty ||
                           ),
                         ),
                         const SizedBox(height: 15),
-                        // Email
                         TextField(
                           controller: emailController,
                           keyboardType: TextInputType.emailAddress,
@@ -175,7 +168,6 @@ if (email.isEmpty ||
                         ),
 
                         const SizedBox(height: 15),
-                        // DOB
                         TextField(
                           controller: dobController,
                           readOnly: false,
@@ -209,16 +201,13 @@ if (email.isEmpty ||
                               lastDate: DateTime(2100),
                             );
 
-                            if (pickedDate != null) {
-                              dobController.text =
-                                  "${pickedDate.day.toString().padLeft(2, '0')}/"
-                                  "${pickedDate.month.toString().padLeft(2, '0')}/"
-                                  "${pickedDate.year}";
-                            }
-                          },
+                            dobController.text =
+                                "${pickedDate?.day.toString().padLeft(2, '0')}/"
+                                "${pickedDate?.month.toString().padLeft(2, '0')}/"
+                                "${pickedDate?.year}";
+                                                    },
                         ),
                         const SizedBox(height: 15),
-                        // Password
                         TextField(
                           controller: passwordController,
                           obscureText: true,
@@ -233,7 +222,6 @@ if (email.isEmpty ||
                           ),
                         ),
                         const SizedBox(height: 15),
-                        // Confirm Password
                         TextField(
                           controller: confirmPassController,
                           obscureText: true,
@@ -288,7 +276,7 @@ if (email.isEmpty ||
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const LoginPage(),
+                              builder: (_) =>  LoginPage(),
                             ),
                           );
                         },

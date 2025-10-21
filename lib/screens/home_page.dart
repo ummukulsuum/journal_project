@@ -27,10 +27,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _loadCurrentUserAndBox();
+    loadCurrentUserAndBox();
   }
 
-  Future<void> _loadCurrentUserAndBox() async {
+  Future<void> loadCurrentUserAndBox() async {
     final prefs = await SharedPreferences.getInstance();
     currentUser = prefs.getString('currentUser') ?? '';
     journalsBox = await Hive.openBox<JournalModel>('journals_$currentUser');
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
     setState(() => image = null);
 
     Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => const Bottomnavbar(initialIndex: 1)));
+        MaterialPageRoute(builder: (context) => const Bottomnavbar(initialIndex: 1, currentUserId: '',)));
   }
 
   @override
@@ -140,7 +140,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 12),
 
-                  // 📝 Heading
                   TextField(
                     controller: headingController,
                     decoration: const InputDecoration(
@@ -150,7 +149,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 12),
 
-                  // 🖼 Add Photo
                   GestureDetector(
                     onTap: pickImage,
                     child: Container(
@@ -180,7 +178,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 12),
 
-                  // Notes
                   TextField(
                     controller: textController,
                     maxLines: 10,

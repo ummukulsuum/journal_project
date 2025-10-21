@@ -30,7 +30,7 @@ class _SplashState extends State<SplashScreen> {
     if (isLoggedIn) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Bottomnavbar()),
+        MaterialPageRoute(builder: (context) =>  Bottomnavbar(currentUserId: '',)),
       );
     } else {
       Navigator.pushReplacement(
