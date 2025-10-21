@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HabitData {
-  // Current values for each habit
+  // Default values for habits
   static Map<String, Map<String, dynamic>> habits = {
     "Code Practice": {"type": "count", "value": 0},
     "Read Docs": {"type": "time", "value": 0},
@@ -14,6 +14,7 @@ class HabitData {
     "Take Break": {"type": "time", "value": 0},
   };
 
+  // UI info for each habit
   static Map<String, Map<String, dynamic>> habitDetails = {
     "Code Practice": {"icon": Icons.code, "color": Color.fromARGB(255, 85, 53, 42)},
     "Read Docs": {"icon": Icons.menu_book, "color": Color(0xFFBCAAA4)},

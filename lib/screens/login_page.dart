@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all text fields')),
+        const SnackBar(content: Text('Please fill all fields')),
       );
       return;
     }
@@ -38,9 +38,7 @@ class _LoginPageState extends State<LoginPage> {
     String savedPassword = prefs.getString('password_$username') ?? '';
 
     if (password == savedPassword) {
-      // Set current user for journals
       await prefs.setString('currentUser', username);
-      await prefs.setString('current_box', 'journals_$username');
       await prefs.setBool('isLoggedIn', true);
 
       Navigator.pushReplacement(

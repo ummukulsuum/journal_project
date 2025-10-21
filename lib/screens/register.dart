@@ -24,42 +24,61 @@ class _RegisterPageState extends State<RegisterPage> {
     String password = passwordController.text.trim();
     String confirmPassword = confirmPassController.text.trim();
 
-    if (username.isEmpty || email.isEmpty || dob.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+    // 1️⃣ All fields must be filled
+    if (username.isEmpty ||
+        email.isEmpty ||
+        dob.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (_) => AlertDialog(
           title: const Text('Incomplete Fields'),
-          content: const Text('Please fill all fields'),
+          content: const Text('All fields must be filled'),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK')),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
           ],
         ),
       );
       return;
     }
-
-    if (!email.endsWith('@gmail.com')) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Invalid Email'),
-          content: const Text('Email must be a valid @gmail.com address'),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK')),
-          ],
+// 2️⃣ Email validation
+if (email.isEmpty ||
+    !email.endsWith('@gmail.com') ||
+    email.split('@')[0].isEmpty) {
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      title: const Text('Invalid Email'),
+      content: const Text(
+          'Email cannot be empty and must have text before @gmail.com'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('OK'),
         ),
-      );
-      return;
-    }
+      ],
+    ),
+  );
+  return;
+}
 
+
+    // 3️⃣ Password match
     if (password != confirmPassword) {
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (_) => AlertDialog(
           title: const Text('Password Error'),
           content: const Text('Passwords do not match'),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK')),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
           ],
         ),
       );
@@ -68,29 +87,22 @@ class _RegisterPageState extends State<RegisterPage> {
 
     final prefs = await SharedPreferences.getInstance();
 
-    bool alreadyRegistered = prefs.getBool('isRegistered_$username') ?? false;
-    if (alreadyRegistered) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Username already exists')),
-      );
-      return;
-    }
+  
 
-    // Save user credentials individually
+    // 5️⃣ Save user data
     await prefs.setString('username_$username', username);
     await prefs.setString('email_$username', email);
     await prefs.setString('dob_$username', dob);
     await prefs.setString('password_$username', password);
     await prefs.setBool('isRegistered_$username', true);
 
-    // Set current user
+    // 6️⃣ Set current user
     await prefs.setString('currentUser', username);
-    await prefs.setString('current_box', 'journals_$username');
     await prefs.setBool('isLoggedIn', true);
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const Bottomnavbar()),
+      MaterialPageRoute(builder: (_) => const Bottomnavbar()),
     );
   }
 
@@ -111,7 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: 550,
+                    height: 580,
                     width: 320,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
@@ -128,8 +140,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset('assets/images/journallylogo.png', width: 180),
-                        const SizedBox(height: 30),
+                        Image.asset(
+                          'assets/images/journallylogo.png',
+                          width: 180,
+                        ),
+                        const SizedBox(height: 25),
+                        // Username
                         TextField(
                           controller: usernameController,
                           decoration: InputDecoration(
@@ -143,6 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         const SizedBox(height: 15),
+                        // Email
                         TextField(
                           controller: emailController,
                           keyboardType: TextInputType.emailAddress,
@@ -156,31 +173,52 @@ class _RegisterPageState extends State<RegisterPage> {
                             prefixIcon: const Icon(Icons.email_outlined),
                           ),
                         ),
+
                         const SizedBox(height: 15),
+                        // DOB
                         TextField(
                           controller: dobController,
-                          readOnly: true,
+                          readOnly: false,
                           decoration: InputDecoration(
                             fillColor: const Color.fromARGB(255, 239, 224, 211),
                             filled: true,
                             labelText: 'Date of Birth',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+                                borderRadius: BorderRadius.circular(10)),
                             prefixIcon: const Icon(Icons.cake_outlined),
                           ),
                           onTap: () async {
                             FocusScope.of(context).requestFocus(FocusNode());
+
+                            DateTime initialDate = DateTime.now();
+                            if (dobController.text.isNotEmpty) {
+                              List<String> parts = dobController.text.split('/');
+                              if (parts.length == 3) {
+                                initialDate = DateTime(
+                                  int.parse(parts[2]),
+                                  int.parse(parts[1]),
+                                  int.parse(parts[0]),
+                                );
+                              }
+                            }
+
                             DateTime? pickedDate = await showDatePicker(
                               context: context,
-                              initialDate: DateTime(2006),
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime.now(),
+                              initialDate: initialDate,
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2100),
                             );
-                            dobController.text = "${pickedDate?.day}/${pickedDate?.month}/${pickedDate?.year}";
-                                                    },
+
+                            if (pickedDate != null) {
+                              dobController.text =
+                                  "${pickedDate.day.toString().padLeft(2, '0')}/"
+                                  "${pickedDate.month.toString().padLeft(2, '0')}/"
+                                  "${pickedDate.year}";
+                            }
+                          },
                         ),
                         const SizedBox(height: 15),
+                        // Password
                         TextField(
                           controller: passwordController,
                           obscureText: true,
@@ -195,6 +233,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         const SizedBox(height: 15),
+                        // Confirm Password
                         TextField(
                           controller: confirmPassController,
                           obscureText: true,
@@ -214,15 +253,25 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: ElevatedButton(
                             onPressed: registerUser,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromARGB(255, 164, 112, 67),
+                              backgroundColor: const Color.fromARGB(
+                                255,
+                                164,
+                                112,
+                                67,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 12),
                             ),
                             child: const Text(
                               'Sign up',
-                              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -238,12 +287,17 @@ class _RegisterPageState extends State<RegisterPage> {
                         onTap: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => const LoginPage()),
+                            MaterialPageRoute(
+                              builder: (_) => const LoginPage(),
+                            ),
                           );
                         },
                         child: const Text(
                           'Login',
-                          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
