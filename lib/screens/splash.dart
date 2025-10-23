@@ -19,7 +19,7 @@ class _SplashState extends State<SplashScreen> {
   }
 
   Future<void> splash() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 6));
     await checkLogin();
   }
 
@@ -43,9 +43,9 @@ class _SplashState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(179, 133, 107, 1.0),
+      backgroundColor:Colors.white,
       body: Center(
-        child: Image.asset('assets/images/journallyy.png', width: 330),
+        child: Image.asset('assets/images/pathverseLogo.png',width: 300,),
       ),
     );
   }

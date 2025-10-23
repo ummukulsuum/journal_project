@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:journally/models/goal_model.dart';
+// import 'package:journally/models/goal_model.dart';
 import 'package:journally/screens/splash.dart';
 import 'package:journally/models/journal_model.dart';
 
@@ -11,7 +11,7 @@ void main() async {
 
   // Register Hive adapters
   Hive.registerAdapter(JournalModelAdapter());
-  Hive.registerAdapter(GoalModelAdapter());
+  // Hive.registerAdapter(GoalModelAdapter());
 
   runApp(const MyApp());
 }

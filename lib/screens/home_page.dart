@@ -1,10 +1,4 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:journally/models/journal_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,183 +8,96 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  DateTime selectedDate = DateTime.now();
-  File? image;
-  final picker = ImagePicker();
-
-  final TextEditingController headingController = TextEditingController();
-  final TextEditingController textController = TextEditingController();
-
-  late Box<JournalModel> journalsBox;
-  String currentUser = '';
-
-  @override
-  void initState() {
-    super.initState();
-    loadCurrentUserAndBox();
-  }
-
-  Future<void> loadCurrentUserAndBox() async {
-    final prefs = await SharedPreferences.getInstance();
-    currentUser = prefs.getString('currentUser') ?? '';
-    journalsBox = await Hive.openBox<JournalModel>('journals_$currentUser');
-    setState(() {});
-  }
-
-  Future<void> pickImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() => image = File(pickedFile.path));
-    }
-  }
-
-  Future<void> selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null) setState(() => selectedDate = picked);
-  }
-
-  void saveJournal() async {
-    if (headingController.text.isEmpty || textController.text.isEmpty || image == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please fill all fields')));
-      return;
-    }
-
-    final journal = JournalModel(
-      date: selectedDate,
-      heading: headingController.text,
-      imagePath: image!.path,
-      notes: textController.text,
-    );
-
-    await journalsBox.add(journal);
-
-    headingController.clear();
-    textController.clear();
-    setState(() => image = null);
-
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => const Bottomnavbar(initialIndex: 1, currentUserId: '',)));
-  }
+  final List<Map<String, dynamic>> dashboardItems = [
+    {
+      "title": "Wishlist",
+      "icon": Icons.favorite_border,
+    },
+    {
+      "title": "Journals",
+      "icon": Icons.menu_book_rounded,
+    },
+    {
+      "title": "Pie Chart",
+      "icon": Icons.pie_chart_outline,
+    },
+    {
+      "title": "Visited Places",
+      "icon": Icons.location_on_outlined,
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 245, 230, 217),
+      backgroundColor: const Color(0xFFF0F0F0), 
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 245, 230, 217),
-        title: const Text(
-          "Journals",
-          style: TextStyle(color: Color.fromARGB(255, 73, 27, 11)),
+        backgroundColor: const Color.fromARGB(255, 220, 237, 249),
+        title: Image.asset(
+          'assets/images/Adobe Express - file (4).png',
+          width: 120,  
+          height: 40, 
         ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.check,
-              size: 28,
-              color: const Color.fromARGB(255, 73, 27, 11),
-            ),
-            onPressed: saveJournal,
-          ),
-          const SizedBox(width: 20),
-        ],
+        
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 40),
-          child: Container(
-            width: 350,
-            height: 670,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 8,
-                  offset: Offset(4, 4),
-                ),
-              ],
-            ),
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // 📅 Date Selector
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Date: ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}",
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.calendar_today, color: Colors.brown),
-                        onPressed: () => selectDate(context),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-
-                  TextField(
-                    controller: headingController,
-                    decoration: const InputDecoration(
-                      labelText: "Heading",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  GestureDetector(
-                    onTap: pickImage,
-                    child: Container(
-                      height: 180,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF5E6D9),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.brown.shade200),
-                      ),
-                      child: image == null
-                          ? const Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.add_a_photo, size: 40, color: Colors.brown),
-                                  SizedBox(height: 8),
-                                  Text("Tap to add photo"),
-                                ],
-                              ),
-                            )
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.file(image!, fit: BoxFit.cover, width: double.infinity),
-                            ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  TextField(
-                    controller: textController,
-                    maxLines: 10,
-                    decoration: const InputDecoration(
-                      labelText: "Write your thoughts...",
-                      border: OutlineInputBorder(),
-                      alignLabelWithHint: true,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GridView.builder(
+          itemCount: dashboardItems.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, // 2 tiles per row
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 1.0,
           ),
+          itemBuilder: (context, index) {
+            final item = dashboardItems[index];
+            return GestureDetector(
+              onTap: () {
+                // TODO: Navigate to respective page
+                print("${item['title']} tapped");
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white, // clean white tile
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0B3D91), // navy circle
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        item['icon'],
+                        size: 36,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      item['title'],
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
