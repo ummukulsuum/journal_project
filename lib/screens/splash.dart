@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:journally/screens/navigation_bar.dart';
 import 'package:journally/screens/login_page.dart';
@@ -30,7 +29,9 @@ class _SplashState extends State<SplashScreen> {
     if (isLoggedIn) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>  Bottomnavbar(currentUserId: '',)),
+        MaterialPageRoute(
+          builder: (context) => Bottomnavbar(currentUserId: ''),
+        ),
       );
     } else {
       Navigator.pushReplacement(
@@ -43,9 +44,14 @@ class _SplashState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:Colors.white,
-      body: Center(
-        child: Image.asset('assets/images/pathverseLogo.png',width: 300,),
+      backgroundColor: const Color.fromARGB(255, 239, 248, 255),
+      body: Container(
+        child: Center(
+          child: Image.asset(
+            'assets/images/logo6-removebg-preview.png',
+            width: 300,
+          ),
+        ),
       ),
     );
   }

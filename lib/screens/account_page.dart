@@ -38,7 +38,7 @@ class _AccountPageState extends State<AccountPage> {
         dobController.text = pref.getString('dob_$currentUser') ?? '';
 
         String? imagePath = pref.getString('profileImage_$currentUser');
-        if (imagePath!.isNotEmpty) {
+        if (imagePath != null && imagePath.isNotEmpty) {
           profileImage = File(imagePath);
         }
       });
@@ -49,9 +49,7 @@ class _AccountPageState extends State<AccountPage> {
     final picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (image != null) {
-      setState(() {
-        profileImage = File(image.path);
-      });
+      setState(() => profileImage = File(image.path));
       final pref = await SharedPreferences.getInstance();
       await pref.setString('profileImage_$currentUser', image.path);
     }
@@ -64,7 +62,7 @@ class _AccountPageState extends State<AccountPage> {
         child: Wrap(
           children: [
             ListTile(
-              leading: const Icon(Icons.photo_library),
+              leading: const Icon(Icons.photo_library, color: Colors.blue),
               title: const Text("Choose from Gallery"),
               onTap: () {
                 Navigator.pop(context);
@@ -72,19 +70,17 @@ class _AccountPageState extends State<AccountPage> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.delete),
+              leading: const Icon(Icons.delete, color: Colors.redAccent),
               title: const Text("Delete Photo"),
               onTap: () async {
                 Navigator.pop(context);
-                setState(() {
-                  profileImage = null;
-                });
+                setState(() => profileImage = null);
                 final pref = await SharedPreferences.getInstance();
                 await pref.remove('profileImage_$currentUser');
               },
             ),
             ListTile(
-              leading: const Icon(Icons.cancel),
+              leading: const Icon(Icons.cancel, color: Colors.grey),
               title: const Text("Cancel"),
               onTap: () => Navigator.pop(context),
             ),
@@ -107,22 +103,21 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5E6D9),
+      backgroundColor: const Color(0xFFF0F0F0), 
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF5E6D9),
-        elevation: 0,
-        title: const Text("Account", style: TextStyle(color: Colors.brown)),
+        backgroundColor: Color.fromARGB(255, 195, 204, 213),
+        title: Image.asset(
+          'assets/images/Adobe Express - file (4).png',
+          width: 160,  
+          height: 60, 
+        ),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(isEditingOther ? Icons.check : Icons.edit, color: Colors.brown),
+            icon: Icon(isEditingOther ? Icons.check : Icons.edit, color: Color.fromARGB(255, 18, 81, 133)),
             onPressed: () async {
-              if (isEditingOther) {
-                await saveProfileData();
-              }
-              setState(() {
-                isEditingOther = !isEditingOther;
-              });
+              if (isEditingOther) await saveProfileData();
+              setState(() => isEditingOther = !isEditingOther);
             },
           ),
         ],
@@ -133,53 +128,69 @@ class _AccountPageState extends State<AccountPage> {
           child: Column(
             children: [
               const SizedBox(height: 30),
+
               GestureDetector(
                 onTap: showImageOptions,
                 child: CircleAvatar(
                   radius: 60,
                   backgroundImage: profileImage != null ? FileImage(profileImage!) : null,
-                  backgroundColor: Colors.brown.shade300,
+                  backgroundColor: const Color.fromARGB(255, 205, 231, 252),
                   child: profileImage == null
-                      ? const Icon(Icons.person, size: 60, color: Colors.white)
+                      ? const Icon(Icons.person, size: 60, color: Color.fromARGB(255, 18, 81, 133))
                       : null,
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
+              Text(
                 "Tap to add/change profile photo",
-                style: TextStyle(fontSize: 14, color: Colors.brown),
+                style: TextStyle(fontSize: 14, color: Color.fromARGB(255, 18, 81, 133)),
               ),
               const SizedBox(height: 30),
-              // Username (read-only)
+
               TextField(
                 controller: nameController,
                 readOnly: true,
                 decoration: InputDecoration(
                   hintText: "Full Name",
-                  prefixIcon: const Icon(Icons.person, color: Colors.brown),
+                  prefixIcon: Icon(Icons.person, color:Color.fromARGB(255, 18, 81, 133)),
+                  filled: true,
+                  fillColor: Colors.blue[50],
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color.fromARGB(255, 18, 81, 133)),
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
-              // Email
+
               TextField(
                 controller: emailController,
                 readOnly: !isEditingOther,
                 decoration: InputDecoration(
                   hintText: "Email ID",
-                  prefixIcon: const Icon(Icons.email, color: Colors.brown),
+                  prefixIcon: Icon(Icons.email, color: Color.fromARGB(255, 18, 81, 133)),
+                  filled: true,
+                  fillColor: Colors.blue[50],
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color.fromARGB(255, 18, 81, 133)),
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
-              // DOB
+
               TextField(
                 controller: dobController,
                 readOnly: !isEditingOther,
                 decoration: InputDecoration(
                   hintText: "Date of Birth",
-                  prefixIcon: const Icon(Icons.cake, color: Colors.brown),
+                  prefixIcon: Icon(Icons.cake, color: Color.fromARGB(255, 18, 81, 133)),
+                  filled: true,
+                  fillColor: Colors.blue[50],
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color.fromARGB(255, 18, 81, 133)),
+                  ),
                 ),
                 onTap: isEditingOther
                     ? () async {
@@ -189,16 +200,24 @@ class _AccountPageState extends State<AccountPage> {
                           firstDate: DateTime(1900),
                           lastDate: DateTime.now(),
                         );
-                        setState(() {
-                          dobController.text = "${picked?.day}/${picked?.month}/${picked?.year}";
-                        });
-                                            }
+                        if (picked != null) {
+                          setState(() {
+                            dobController.text =
+                                "${picked.day}/${picked.month}/${picked.year}";
+                          });
+                        }
+                      }
                     : null,
               ),
+
               const SizedBox(height: 30),
+
               ListTile(
-                leading: const Icon(Icons.logout, color: Colors.redAccent),
-                title: const Text("Logout", style: TextStyle(color: Colors.redAccent)),
+                leading: const Icon(Icons.logout, color: Color.fromARGB(255, 180, 9, 9)),
+                title: const Text(
+                  "Logout",
+                  style: TextStyle(color: Color.fromARGB(255, 180, 9, 9), fontWeight: FontWeight.w500),
+                ),
                 onTap: () async {
                   final pref = await SharedPreferences.getInstance();
                   await pref.remove('currentUser');

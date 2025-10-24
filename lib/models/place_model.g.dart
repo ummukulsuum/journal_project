@@ -21,6 +21,7 @@ class PlaceModelAdapter extends TypeAdapter<PlaceModel> {
       notes: fields[1] as String,
       imagePath: fields[2] as String,
       visited: fields[3] as bool,
+      isFavourite: fields[5] as bool,
       dateAdded: fields[4] as DateTime,
     );
   }
@@ -28,7 +29,7 @@ class PlaceModelAdapter extends TypeAdapter<PlaceModel> {
   @override
   void write(BinaryWriter writer, PlaceModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class PlaceModelAdapter extends TypeAdapter<PlaceModel> {
       ..writeByte(3)
       ..write(obj.visited)
       ..writeByte(4)
-      ..write(obj.dateAdded);
+      ..write(obj.dateAdded)
+      ..writeByte(5)
+      ..write(obj.isFavourite);
   }
 
   @override

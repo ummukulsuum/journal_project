@@ -44,26 +44,26 @@ class _RegisterPageState extends State<RegisterPage> {
       );
       return;
     }
-if (email.isEmpty ||
-    !email.endsWith('@gmail.com') ||
-    email.split('@')[0].isEmpty) {
-  showDialog(
-    context: context,
-    builder: (_) => AlertDialog(
-      title: const Text('Invalid Email'),
-      content: const Text(
-          'Email cannot be empty and must have text before @gmail.com'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('OK'),
+    if (email.isEmpty ||
+        !email.endsWith('@gmail.com') ||
+        email.split('@')[0].isEmpty) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text('Invalid Email'),
+          content: const Text(
+            'Email cannot be empty and must have text before @gmail.com',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
         ),
-      ],
-    ),
-  );
-  return;
-}
-
+      );
+      return;
+    }
 
     if (password != confirmPassword) {
       showDialog(
@@ -84,8 +84,6 @@ if (email.isEmpty ||
 
     final prefs = await SharedPreferences.getInstance();
 
-  
-
     await prefs.setString('username_$username', username);
     await prefs.setString('email_$username', email);
     await prefs.setString('dob_$username', dob);
@@ -96,21 +94,16 @@ if (email.isEmpty ||
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => const Bottomnavbar(currentUserId: '',)),
+      MaterialPageRoute(builder: (_) => const Bottomnavbar(currentUserId: '')),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 18, 81, 133),
       body: Stack(
         children: [
-          SizedBox.expand(
-            child: Image.asset(
-              'assets/images/Gemini_Generated_Image_vpfvobvpfvobvpfv.png',
-              fit: BoxFit.fill,
-            ),
-          ),
           Center(
             child: SingleChildScrollView(
               child: Column(
@@ -121,29 +114,21 @@ if (email.isEmpty ||
                     width: 320,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(170, 230, 209, 188),
+                      color: Color(0xFFF0F0F0),
                       borderRadius: BorderRadius.circular(20),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromARGB(103, 0, 0, 0),
-                          blurRadius: 10,
-                          offset: Offset(2, 4),
-                        ),
-                      ],
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          'assets/images/journallylogo.png',
+                          'assets/images/Adobe Express - file (4).png',
                           width: 180,
                         ),
                         const SizedBox(height: 25),
-                        // Username
                         TextField(
                           controller: usernameController,
                           decoration: InputDecoration(
-                            fillColor: const Color.fromARGB(255, 239, 224, 211),
+                            fillColor: Color.fromARGB(255, 240, 247, 255),
                             filled: true,
                             labelText: 'Username',
                             border: OutlineInputBorder(
@@ -157,7 +142,7 @@ if (email.isEmpty ||
                           controller: emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                            fillColor: const Color.fromARGB(255, 239, 224, 211),
+                            fillColor: Color.fromARGB(255, 240, 247, 255),
                             filled: true,
                             labelText: 'Email',
                             border: OutlineInputBorder(
@@ -172,11 +157,12 @@ if (email.isEmpty ||
                           controller: dobController,
                           readOnly: false,
                           decoration: InputDecoration(
-                            fillColor: const Color.fromARGB(255, 239, 224, 211),
+                            fillColor: Color.fromARGB(255, 240, 247, 255),
                             filled: true,
                             labelText: 'Date of Birth',
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             prefixIcon: const Icon(Icons.cake_outlined),
                           ),
                           onTap: () async {
@@ -184,7 +170,9 @@ if (email.isEmpty ||
 
                             DateTime initialDate = DateTime.now();
                             if (dobController.text.isNotEmpty) {
-                              List<String> parts = dobController.text.split('/');
+                              List<String> parts = dobController.text.split(
+                                '/',
+                              );
                               if (parts.length == 3) {
                                 initialDate = DateTime(
                                   int.parse(parts[2]),
@@ -205,14 +193,14 @@ if (email.isEmpty ||
                                 "${pickedDate?.day.toString().padLeft(2, '0')}/"
                                 "${pickedDate?.month.toString().padLeft(2, '0')}/"
                                 "${pickedDate?.year}";
-                                                    },
+                          },
                         ),
                         const SizedBox(height: 15),
                         TextField(
                           controller: passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
-                            fillColor: const Color.fromARGB(255, 239, 224, 211),
+                            fillColor: Color.fromARGB(255, 240, 247, 255),
                             filled: true,
                             labelText: 'Password',
                             border: OutlineInputBorder(
@@ -226,7 +214,7 @@ if (email.isEmpty ||
                           controller: confirmPassController,
                           obscureText: true,
                           decoration: InputDecoration(
-                            fillColor: const Color.fromARGB(255, 239, 224, 211),
+                            fillColor: Color.fromARGB(255, 240, 247, 255),
                             filled: true,
                             labelText: 'Confirm Password',
                             border: OutlineInputBorder(
@@ -241,22 +229,17 @@ if (email.isEmpty ||
                           child: ElevatedButton(
                             onPressed: registerUser,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromARGB(
-                                255,
-                                164,
-                                112,
-                                67,
-                              ),
+                              backgroundColor: Color.fromARGB(255, 18, 81, 133),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 12),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
                             ),
                             child: const Text(
                               'Sign up',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Color.fromARGB(255, 240, 247, 255),
+
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -275,9 +258,7 @@ if (email.isEmpty ||
                         onTap: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(
-                              builder: (_) =>  LoginPage(),
-                            ),
+                            MaterialPageRoute(builder: (_) => LoginPage()),
                           );
                         },
                         child: const Text(

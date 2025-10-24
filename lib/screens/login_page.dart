@@ -19,9 +19,9 @@ class _LoginPageState extends State<LoginPage> {
     String password = passwordController.text.trim();
 
     if (username.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please fill all fields')));
       return;
     }
 
@@ -29,9 +29,9 @@ class _LoginPageState extends State<LoginPage> {
     bool isRegistered = prefs.getBool('isRegistered_$username') ?? false;
 
     if (!isRegistered) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('User not registered!')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('User not registered!')));
       return;
     }
 
@@ -43,7 +43,9 @@ class _LoginPageState extends State<LoginPage> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Bottomnavbar(currentUserId: '',)),
+        MaterialPageRoute(
+          builder: (context) => const Bottomnavbar(currentUserId: ''),
+        ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -55,11 +57,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 18, 81, 133),
       body: Stack(
         children: [
-          SizedBox.expand(
-            child: Image.asset('assets/images/bg(1).jpeg', fit: BoxFit.cover),
-          ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -69,29 +69,31 @@ class _LoginPageState extends State<LoginPage> {
                   width: 320,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(230, 240, 222, 204),
+                    color: Color(0xFFF0F0F0),
                     borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 10,
-                        offset: const Offset(2, 4),
-                      ),
-                    ],
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset('assets/images/journallylogo.png', width: 180),
+                      Image.asset(
+                        'assets/images/Adobe Express - file (4).png',
+                        width: 180,
+                      ),
                       const SizedBox(height: 40),
                       TextField(
                         controller: usernameController,
                         decoration: InputDecoration(
-                          fillColor: const Color.fromARGB(255, 249, 231, 215),
+                          //     enabledBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide(
+                          //     color: Color.fromARGB(255, 18, 81, 133),
+                          //   ),
+                          // ),
+                          fillColor: Color.fromARGB(255, 240, 247, 255),
                           filled: true,
                           labelText: 'Username',
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           prefixIcon: const Icon(Icons.person_outlined),
                         ),
                       ),
@@ -100,30 +102,35 @@ class _LoginPageState extends State<LoginPage> {
                         controller: passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
-                          fillColor: const Color.fromARGB(255, 249, 231, 215),
+                          fillColor: Color.fromARGB(255, 240, 247, 255),
                           filled: true,
                           labelText: 'Password',
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           prefixIcon: const Icon(Icons.lock_outline_rounded),
                         ),
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
-                        width: 270,
+                        width: 280,
                         child: ElevatedButton(
                           onPressed: loginUser,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 164, 112, 67),
+                            backgroundColor: Color.fromARGB(255, 18, 81, 133),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
-                          child: const Text('Login',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold)),
+                          child: const Text(
+                            'Login',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -133,17 +140,28 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("If you don't have an account, "),
+                    const Text(
+                      "If you don't have an account, ",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 220, 237, 255),
+                      ),
+                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const RegisterPage()));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterPage(),
+                          ),
+                        );
                       },
-                      child: const Text('Sign in',
-                          style: TextStyle(
-                              color: Colors.blue, fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        'Sign in',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 253, 254, 255),
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                     ),
                   ],
                 ),

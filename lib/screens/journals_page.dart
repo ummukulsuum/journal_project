@@ -40,22 +40,29 @@ class _JournalsPageState extends State<JournalsPage> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: Colors.brown[50],
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         title: const Text(
           'Delete Journal',
-          style: TextStyle(color: Colors.brown),
+          style: TextStyle(color: Color.fromARGB(255, 18, 81, 133)),
         ),
         content: const Text(
           'Are you sure you want to delete this journal?',
-          style: TextStyle(color: Colors.brown),
+          style: TextStyle(color: Color.fromARGB(255, 18, 81, 133)),
         ),
+        actionsAlignment: MainAxisAlignment.end,
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel', style: TextStyle(color: Colors.brown)),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Color.fromARGB(255, 18, 81, 133)),
+            ),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.brown),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 220, 237, 249),
+            ),
+
             onPressed: () => Navigator.pop(ctx, true),
             child: const Text('Delete'),
           ),
@@ -83,103 +90,107 @@ class _JournalsPageState extends State<JournalsPage> {
       builder: (ctx) {
         return StatefulBuilder(
           builder: (context, setStateDialog) => AlertDialog(
-            backgroundColor: Colors.brown[50],
+            backgroundColor: Colors.white,
             title: const Text(
               'Edit Journal',
-              style: TextStyle(color: Colors.brown),
+              style: TextStyle(color: Color.fromARGB(255, 18, 81, 133)),
             ),
-            content: SingleChildScrollView(
-              child: Column(
-                children: [
-                  TextField(
-                    controller: headingCtrl,
-                    decoration: InputDecoration(
-                      labelText: 'Heading',
-                      labelStyle: const TextStyle(color: Colors.brown),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.brown.shade300),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.brown.shade700),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: notesCtrl,
-                    maxLines: 4,
-                    decoration: InputDecoration(
-                      labelText: 'Notes',
-                      labelStyle: const TextStyle(color: Colors.brown),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.brown.shade300),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.brown.shade700),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Text(
-                        "Date: ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}",
-                        style: const TextStyle(color: Colors.brown),
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.calendar_today,
-                          color: Colors.brown,
+            content: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: headingCtrl,
+                      decoration: InputDecoration(
+                        labelText: 'Heading',
+                        labelStyle: const TextStyle(
+                          color: Color.fromARGB(255, 18, 81, 133),
                         ),
-                        onPressed: () async {
-                          final DateTime? picked = await showDatePicker(
-                            context: ctx,
-                            initialDate: selectedDate,
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime(2101),
-                          );
-                          if (picked != null) {
-                            setStateDialog(() => selectedDate = picked);
-                          }
-                        },
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 18, 81, 133),
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  GestureDetector(
-                    onTap: () async {
-                      final picked = await picker.pickImage(
-                        source: ImageSource.gallery,
-                      );
-                      if (picked != null) {
-                        setStateDialog(() => imageFile = File(picked.path));
-                      }
-                    },
-                    child: Container(
-                      height: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.brown[100],
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.brown.shade300),
-                      ),
-                      child: imageFile != null
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.file(
-                                imageFile!,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              ),
-                            )
-                          : const Center(
-                              child: Icon(
-                                Icons.add_a_photo,
-                                color: Colors.brown,
-                              ),
-                            ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: notesCtrl,
+                      maxLines: 4,
+                      decoration: InputDecoration(
+                        labelText: 'Notes',
+                        labelStyle: const TextStyle(
+                          color: Color.fromARGB(255, 18, 81, 133),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 18, 81, 133),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Text(
+                          "Date: ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}",
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 18, 81, 133),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.calendar_today,
+                            color: Color.fromARGB(255, 18, 81, 133),
+                          ),
+                          onPressed: () async {
+                            final DateTime? picked = await showDatePicker(
+                              context: ctx,
+                              initialDate: selectedDate,
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2101),
+                            );
+                            if (picked != null) {
+                              setStateDialog(() => selectedDate = picked);
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    GestureDetector(
+                      onTap: () async {
+                        final picked = await picker.pickImage(
+                          source: ImageSource.gallery,
+                        );
+                        if (picked != null) {
+                          setStateDialog(() => imageFile = File(picked.path));
+                        }
+                      },
+                      child: SizedBox(
+                        height: 150,
+
+                        child: imageFile != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.file(
+                                  imageFile!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ),
+                              )
+                            : const Center(
+                                child: Icon(
+                                  Icons.add_a_photo,
+                                  color: Color.fromARGB(255, 18, 81, 133),
+                                ),
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             actions: [
@@ -187,11 +198,13 @@ class _JournalsPageState extends State<JournalsPage> {
                 onPressed: () => Navigator.pop(ctx),
                 child: const Text(
                   'Cancel',
-                  style: TextStyle(color: Colors.brown),
+                  style: TextStyle(color: Color.fromARGB(255, 18, 81, 133)),
                 ),
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.brown),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 220, 237, 249),
+                ),
                 onPressed: () {
                   journal.heading = headingCtrl.text;
                   journal.notes = notesCtrl.text;
@@ -201,7 +214,10 @@ class _JournalsPageState extends State<JournalsPage> {
                   Navigator.pop(ctx);
                   setState(() {});
                 },
-                child: const Text('Save'),
+                child: Text(
+                  'Save',
+                  style: TextStyle(color: Color.fromARGB(255, 18, 81, 133)),
+                ),
               ),
             ],
           ),
@@ -218,20 +234,23 @@ class _JournalsPageState extends State<JournalsPage> {
 
     final box = journalsBox;
     return Scaffold(
-      // backgroundColor: const Color.fromARGB(255, 220, 237, 249),
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 220, 237, 249),
-        title: Image.asset(
-          'assets/images/Adobe Express - file (4).png',
-          width: 120,
-          height: 40,
+      backgroundColor: const Color(0xFFF0F0F0),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(70), 
+        child: AppBar(
+          backgroundColor: Color.fromARGB(255, 195, 204, 213),
+          title: Image.asset(
+            'assets/images/Adobe Express - file (4).png',
+            width: 150,
+            height: 80,
+          ),
         ),
       ),
       body: box == null || box.isEmpty
           ? const Center(
               child: Text(
                 'No journals yet',
-                style: TextStyle(color: Colors.brown),
+                style: TextStyle(color: Color.fromARGB(255, 11, 44, 71)),
               ),
             )
           : ListView.builder(
@@ -244,8 +263,7 @@ class _JournalsPageState extends State<JournalsPage> {
                     File(journal.imagePath).existsSync();
 
                 return Card(
-                  color:   Color.fromARGB(255, 220, 237, 249),
-
+                  color:Color.fromARGB(255, 195, 204, 213),
                   margin: const EdgeInsets.only(bottom: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -275,18 +293,22 @@ class _JournalsPageState extends State<JournalsPage> {
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 18, 81, 133),
+                                color: Color.fromARGB(255, 11, 49, 80),
                               ),
                             ),
                             const SizedBox(height: 6),
                             Text(
                               "${journal.date.day}/${journal.date.month}/${journal.date.year}",
-                              style: const TextStyle(color: Color.fromARGB(255, 18, 81, 133)),
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 12, 54, 88),
+                              ),
                             ),
                             const SizedBox(height: 8),
                             Text(
                               journal.notes,
-                              style: const TextStyle(color:Color.fromARGB(255, 18, 81, 133)),
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 11, 50, 83),
+                              ),
                             ),
                           ],
                         ),
@@ -295,11 +317,17 @@ class _JournalsPageState extends State<JournalsPage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.edit, color: Color.fromARGB(255, 18, 81, 133)),
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Color.fromARGB(255, 18, 81, 133),
+                            ),
                             onPressed: () => editJournalDialog(index, journal),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.delete, color: Color.fromARGB(255, 18, 81, 133)),
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Color.fromARGB(255, 18, 81, 133),
+                            ),
                             onPressed: () => deleteJournalAt(index),
                           ),
                         ],

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:journally/models/journal_model.dart';
+import 'package:journally/screens/navigation_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'navigation_bar.dart';
 
 class JournalAdd extends StatefulWidget {
   const JournalAdd({super.key, required String currentUserId});
@@ -54,12 +54,42 @@ class _HomePageState extends State<JournalAdd> {
     if (picked != null) setState(() => selectedDate = picked);
   }
 
-  void saveJournal() async {
-    if (headingController.text.isEmpty || textController.text.isEmpty || image == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields')),
+  Future<void> saveJournal() async {
+    if (headingController.text.isEmpty ||
+        textController.text.isEmpty ||
+        image == null) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text(
+            'Incomplete Fields',
+            style: TextStyle(
+              color: Color.fromARGB(255, 18, 81, 133),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: const Text(
+            'Please fill all fields before saving.',
+            style: TextStyle(color: Colors.black87),
+          ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 18, 81, 133),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
       );
-      return;
+      return; 
     }
 
     final journal = JournalModel(
@@ -79,7 +109,7 @@ class _HomePageState extends State<JournalAdd> {
       context,
       MaterialPageRoute(
         builder: (context) => const Bottomnavbar(
-          initialIndex: 1,
+          initialIndex: 2, 
           currentUserId: '',
         ),
       ),
@@ -89,25 +119,32 @@ class _HomePageState extends State<JournalAdd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[50],
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 220, 237, 249),
-        title: Image.asset(
-          'assets/images/Adobe Express - file (4).png',
-          width: 120,  
-          height: 40, 
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.check, size: 28, color: Color.fromARGB(255, 18, 81, 133)),
-            onPressed: saveJournal,
+      backgroundColor: const Color(0xFFF0F0F0),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(70),
+        child: AppBar(
+          backgroundColor: Color.fromARGB(255, 195, 204, 213),
+          title: Image.asset(
+            'assets/images/Adobe Express - file (4).png',
+            width: 150,
+            height: 80,
           ),
-          const SizedBox(width: 20),
-        ],
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.check,
+                size: 28,
+                color: Color.fromARGB(255, 18, 81, 133),
+              ),
+              onPressed: saveJournal,
+            ),
+            const SizedBox(width: 20),
+          ],
+        ),
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 40),
+          padding: const EdgeInsets.only(bottom: 20,top: 20),
           child: Container(
             width: 350,
             height: 670,
@@ -135,53 +172,65 @@ class _HomePageState extends State<JournalAdd> {
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Color.fromARGB(255, 18, 81, 133)
+                          color: Color.fromARGB(255, 18, 81, 133),
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.calendar_today, color: Color.fromARGB(255, 18, 81, 133)),
+                        icon: const Icon(
+                          Icons.calendar_today,
+                          color: Color.fromARGB(255, 18, 81, 133),
+                        ),
                         onPressed: () => selectDate(context),
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
 
-                  // 🏷️ Heading
                   TextField(
                     controller: headingController,
                     decoration: InputDecoration(
                       labelText: "Heading",
-                      labelStyle: const TextStyle(color: Color.fromARGB(255, 18, 81, 133)),
-                      // focusedBorder: OutlineInputBorder(
-                      //   borderSide: BorderSide(color: Colors.blue.shade700),
-                      // ),
+                      labelStyle: const TextStyle(
+                        color: Color.fromARGB(255, 18, 81, 133),
+                      ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color.fromARGB(255, 18, 81, 133)),
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 18, 81, 133),
+                        ),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 18, 81, 133),
+                          width: 2,
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 12),
-
-                  GestureDetector(
+                 GestureDetector(
                     onTap: pickImage,
                     child: Container(
                       height: 180,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: Colors.blue[100],
+                        color: Color.fromARGB(255, 195, 204, 213),
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.blue.shade300),
+                        // border: Border.all(color: Colors.blue.shade300),
                       ),
                       child: image == null
                           ? const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.add_a_photo, size: 40, color:Color.fromARGB(255, 18, 81, 133)),
+                                  Icon(
+                                    Icons.add_a_photo,
+                                    size: 40,
+                                    color: Color.fromARGB(255, 18, 81, 133),
+                                  ),
                                   SizedBox(height: 8),
                                   Text(
                                     "Tap to add photo",
-                                    style: TextStyle(color: Colors.blueGrey),
+                                    style: TextStyle(color: Color.fromARGB(255, 28, 63, 80)),
                                   ),
                                 ],
                               ),
@@ -203,13 +252,20 @@ class _HomePageState extends State<JournalAdd> {
                     maxLines: 10,
                     decoration: InputDecoration(
                       labelText: "Write your thoughts...",
-                      labelStyle: const TextStyle(color: Color.fromARGB(255, 18, 81, 133)),
+                      labelStyle: const TextStyle(
+                        color: Color.fromARGB(255, 18, 81, 133),
+                      ),
                       alignLabelWithHint: true,
-                      // focusedBorder: OutlineInputBorder(
-                      //   borderSide: BorderSide(color: Colors.blue.shade700),
-                      // ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color.fromARGB(255, 18, 81, 133)),
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 18, 81, 133),
+                        ),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 18, 81, 133),
+                          width: 2,
+                        ),
                       ),
                     ),
                   ),
